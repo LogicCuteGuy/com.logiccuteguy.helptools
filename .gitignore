@@ -1,0 +1,31 @@
+# Unity artifacts
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+/[Uu]serSettings/
+
+# Visual Studio / Rider / IDE artifacts
+.vs/
+.idea/
+*.csproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.unityproj
+*.booproj
+*.svntmp
+*.pidb
+*.pidb.meta
+*.pdb
+*.mdb
+*.mdb.meta
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
