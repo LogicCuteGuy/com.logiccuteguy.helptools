@@ -29,8 +29,9 @@ namespace LogicCuteGuy.Editor
             GetWindow<SortParentChildren>(T("Sort Parent Children", "親の子要素をソート", "จัดเรียงลูกของพาเรนต์"));
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             if (Selection.activeGameObject != null)
             {
                 parentObject = Selection.activeGameObject;

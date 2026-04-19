@@ -19,8 +19,9 @@ namespace LogicCuteGuy.Editor
             }
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             if (Selection.activeGameObject != null)
             {
                 targetTerrain = Selection.activeGameObject.GetComponent<Terrain>();
