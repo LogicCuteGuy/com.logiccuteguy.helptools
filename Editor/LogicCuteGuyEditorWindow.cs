@@ -41,8 +41,46 @@ namespace LogicCuteGuy.Editor
         private Texture2D supportIcon;
         private GUIStyle footerStyle;
 
-        protected virtual string Version => "1.0.0";
+        private string _version;
+        protected virtual string Version => string.IsNullOrEmpty(_version) ? (_version = LoadVersion()) : _version;
+
         protected virtual string SupportLink => "https://profile.logiccuteguy.com/#donate";
+
+        private string LoadVersion()
+        {
+            // 1. Try finding by assembly
+            try
+            {
+                var info = UnityEditor.PackageManager.PackageInfo.FindForAssembly(GetType().Assembly);
+                if (info != null && !string.IsNullOrEmpty(info.version)) return info.version;
+            }
+            catch { }
+
+            // 2. Try finding by asset path of this script
+            try
+            {
+                string path = AssetDatabase.GetAssetPath(MonoScript.FromScriptableObject(this));
+                if (!string.IsNullOrEmpty(path))
+                {
+                    var info = UnityEditor.PackageManager.PackageInfo.FindForAssetPath(path);
+                    if (info != null && !string.IsNullOrEmpty(info.version)) return info.version;
+
+                    // 3. Deep Fallback: Read package.json file directly relative to script
+                    // Editor/LogicCuteGuyEditorWindow.cs -> ../package.json
+                    string root = System.IO.Path.GetDirectoryName(System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(path)));
+                    string jsonPath = System.IO.Path.Combine(root, "package.json");
+                    if (System.IO.File.Exists(jsonPath))
+                    {
+                        string content = System.IO.File.ReadAllText(jsonPath);
+                        var match = System.Text.RegularExpressions.Regex.Match(content, "\"version\"\\s*:\\s*\"([^\"]+)\"");
+                        if (match.Success) return match.Groups[1].Value;
+                    }
+                }
+            }
+            catch { }
+
+            return "1.0.0";
+        }
 
         protected static string T(string en, string jp, string th)
         {
@@ -109,7 +147,7 @@ namespace LogicCuteGuy.Editor
 
             using (new EditorGUILayout.HorizontalScope(footerStyle))
             {
-                GUILayout.Label(T("v", "v", "v") + Version, EditorStyles.boldLabel);
+                GUILayout.Label("v" + Version, EditorStyles.boldLabel);
                 GUILayout.FlexibleSpace();
 
                 LCG_Language newLang = (LCG_Language)EditorGUILayout.EnumPopup(currentLanguage, GUILayout.Width(60));
