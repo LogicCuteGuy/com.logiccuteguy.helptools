@@ -27,28 +27,21 @@ namespace LogicCuteGuy.Editor
         [MenuItem("GameObject/LogicCuteGuy/Select Children By Pattern")]
         public static void ShowWindow()
         {
-            GetWindow<SelectChildrenByPattern>(T("Select Children By Pattern", "パターンで子を選択", "เลือกลูกตามรูปแบบ"));
+            var window = GetWindow<SelectChildrenByPattern>(T("Select Children By Pattern", "パターンで子を選択", "เลือกลูกตามรูปแบบ"));
+            if (Selection.activeGameObject != null)
+            {
+                window.parentObject = Selection.activeGameObject;
+                window.matchedObjects.Clear();
+                window.statusMessage = "";
+            }
         }
 
         protected override void OnEnable()
         {
             base.OnEnable();
-            if (parentObject == null && Selection.activeGameObject != null)
-            {
-                parentObject = Selection.activeGameObject;
-            }
         }
 
-        private void OnSelectionChange()
-        {
-            if (Selection.activeGameObject != null && Selection.activeGameObject != parentObject)
-            {
-                parentObject = Selection.activeGameObject;
-                matchedObjects.Clear();
-                statusMessage = "";
-                Repaint();
-            }
-        }
+
 
         protected override void OnWindowGUI()
         {
