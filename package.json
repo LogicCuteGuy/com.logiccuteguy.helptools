@@ -1,6 +1,6 @@
 {
   "name": "com.logiccuteguy.helptools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "LogicCuteGuy Help Tools",
   "description": "A collection of helpful Unity Editor tools for scene management, object manipulation, and optimization.",
   "license": "MIT",
